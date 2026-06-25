@@ -1,0 +1,16 @@
+/* 全局覆盖：只要 vxe 表格行被 hover，内部文字一律强制变白 */
+/*.vxe-table .vxe-body--row.row--hover > td {
+    color: #ffffff !important;
+}
+
+.vxe-table .vxe-body--row.row--hover .vxe-cell {
+    color: #ffffff !important;
+}*/
+
+/* 如果你的交替行类名（location-row-odd/even）也是全局通用的，也可以直接写出来 */
+.vxe-table .location-row-odd > td {
+    background-color: #ffffff;
+}
+.vxe-table .location-row-even > td {
+    background-color: #f6f6f6;
+}

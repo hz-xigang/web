@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<!-- saved from url=(0205)file:///C:/Users/10334/AppData/Local/Temp/%7B7B136B1F-7576-417D-AF62-4375CFA86F74%7D/%7B4780A75C-2839-4CBE-A7DC-448D75E0F6BB%7D/%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E9%A1%B5%E9%9D%A2.html -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WMS 智能仓储管理系统</title>
+    <style>
+        :root {
+            --sidebar-width: 220px;
+            --primary: #2563eb; --primary-light: #eff3ff; --primary-hover: #1d4ed8;
+            --danger: #ef4444; --danger-light: #fef2f2; --danger-hover: #dc2626;
+            --success: #10b981; --success-light: #d1fae5;
+            --warning: #f59e0b; --warning-light: #fffbeb;
+            --bg: #f1f5f9; --card-bg: #ffffff;
+            --text-primary: #1e293b; --text-secondary: #64748b; --text-muted: #94a3b8;
+            --border: #e2e8f0; --border-light: #f1f5f9;
+            --radius: 10px; --radius-sm: 6px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.25);
+            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text-primary);display:flex;height:100vh;overflow:hidden;line-height:1.5;-webkit-font-smoothing:antialiased;}
+        .sidebar{width:var(--sidebar-width);background:linear-gradient(180deg,#1e293b 0%,#0f172a 100%);color:#fff;display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;z-index:10;box-shadow:2px 0 20px rgba(0,0,0,0.15);}
+        .sidebar::-webkit-scrollbar{width:4px;}.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.15);border-radius:4px;}
+        .sidebar-logo{padding:20px 16px;font-size:18px;font-weight:700;letter-spacing:1px;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.02);flex-shrink:0;}
+        .sidebar-logo .logo-icon{width:36px;height:36px;background:var(--primary);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;}
+        .sidebar-nav{flex:1;padding:12px 0;}
+        .nav-group{margin-bottom:6px;}
+        .nav-group-title{padding:12px 16px 6px;font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:#64748b;font-weight:600;user-select:none;}
+        .nav-item{display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;font-size:13.5px;color:#cbd5e1;transition:all var(--transition);border-left:3px solid transparent;margin:2px 6px;border-radius:0 8px 8px 0;user-select:none;}
+        .nav-item:hover{background:rgba(255,255,255,0.06);color:#fff;border-left-color:rgba(255,255,255,0.3);}
+        .nav-item.active{background:rgba(37,99,235,0.25);color:#fff;border-left-color:var(--primary);font-weight:600;box-shadow:0 0 20px rgba(37,99,235,0.15);}
+        .nav-item .nav-icon{font-size:16px;width:22px;text-align:center;flex-shrink:0;}
+        .main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
+        .topbar{background:#fff;padding:14px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:var(--shadow-sm);z-index:5;}
+        .topbar h2{font-size:18px;font-weight:700;color:var(--text-primary);letter-spacing:0.3px;}
+        .topbar .user-info{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-secondary);background:var(--bg);padding:6px 14px;border-radius:20px;font-weight:500;}
+        .topbar .user-avatar{width:30px;height:30px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;}
+        .content{flex:1;padding:24px 28px;overflow-y:auto;overflow-x:hidden;}
+        .content::-webkit-scrollbar{width:6px;}.content::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:4px;}
+        .card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1px solid var(--border);margin-bottom:20px;transition:box-shadow var(--transition);overflow:hidden;}
+        .card:hover{box-shadow:var(--shadow-md);}
+        .card-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;font-weight:600;font-size:15px;background:#fafcff;gap:12px;flex-wrap:wrap;}
+        .card-body{overflow-x:auto;}
+        .card-body::-webkit-scrollbar{height:5px;}.card-body::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:4px;}
+        .toolbar{display:flex;align-items:center;gap:10px;padding:14px 20px;flex-wrap:wrap;background:#fafcff;border-bottom:1px solid var(--border);row-gap:8px;}
+        .toolbar input,.toolbar select{padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;outline:none;min-width:130px;transition:all var(--transition);background:#fff;color:var(--text-primary);}
+        .toolbar input:focus,.toolbar select:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,0.08);}
+        .toolbar input::placeholder{color:#cbd5e1;}
+        .toolbar .date-separator{color:var(--text-muted);font-size:13px;user-select:none;flex-shrink:0;}
+        .btn{display:inline-flex;align-items:center;gap:5px;padding:8px 16px;border:none;border-radius:var(--radius-sm);font-size:13px;font-weight:500;cursor:pointer;transition:all var(--transition);white-space:nowrap;letter-spacing:0.2px;font-family:inherit;}
+        .btn:active{transform:scale(0.97);}
+        .btn-primary{background:var(--primary);color:#fff;box-shadow:0 2px 8px rgba(37,99,235,0.25);}.btn-primary:hover{background:var(--primary-hover);box-shadow:0 4px 14px rgba(37,99,235,0.35);}
+        .btn-outline{background:#fff;color:var(--text-primary);border:1px solid var(--border);}.btn-outline:hover{background:#f8fafc;border-color:#cbd5e1;}
+        .btn-danger{background:var(--danger);color:#fff;box-shadow:0 2px 8px rgba(239,68,68,0.2);}.btn-danger:hover{background:var(--danger-hover);box-shadow:0 4px 14px rgba(239,68,68,0.3);}
+        .btn-sm{padding:5px 12px;font-size:12px;border-radius:5px;}
+        .btn-xs{padding:3px 10px;font-size:11px;border-radius:4px;gap:3px;}
+        .btn-ghost{background:transparent;color:var(--text-secondary);border:none;padding:6px 8px;}.btn-ghost:hover{background:#f1f5f9;color:var(--text-primary);}
+        table{width:100%;border-collapse:collapse;font-size:13px;min-width:800px;}
+        table th,table td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;}
+        table th{background:#f8fafc;font-weight:600;color:var(--text-secondary);font-size:12px;letter-spacing:0.3px;text-transform:uppercase;position:sticky;top:0;z-index:1;}
+        table tbody tr{transition:background var(--transition);}
+        table tbody tr:hover{background:#f8fafc;}
+        table tbody tr:last-child td{border-bottom:none;}
+        .clickable-table tbody tr{cursor:pointer;}
+        .table-actions{display:flex;gap:4px;flex-wrap:nowrap;}
+        .tag{display:inline-block;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:600;letter-spacing:0.3px;white-space:nowrap;}
+        .tag-success{background:var(--success-light);color:#065f46;}
+        .tag-warning{background:var(--warning-light);color:#92400e;}
+        .tag-danger{background:var(--danger-light);color:#991b1b;}
+        .tag-info{background:var(--primary-light);color:#1e40af;}
+        .tag-neutral{background:#f1f5f9;color:#475569;}
+        .modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,0.5);z-index:100;display:flex;align-items:center;justify-content:center;animation:fadeIn 0.2s ease;}
+        @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+        @keyframes slideUp{from{opacity:0;transform:translateY(20px) scale(0.97);}to{opacity:1;transform:translateY(0) scale(1);}}
+        .modal{background:#fff;border-radius:12px;width:90%;max-width:800px;max-height:80vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:slideUp 0.25s ease;}
+        .modal::-webkit-scrollbar{width:5px;}.modal::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:4px;}
+        .modal-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;font-weight:600;font-size:16px;background:#fafcff;border-radius:12px 12px 0 0;position:sticky;top:0;z-index:5;}
+        .modal-body{padding:20px;}
+        .hidden{display:none !important;}
+        .form-group{margin-bottom:15px;display:flex;flex-direction:column;gap:5px;}
+        .form-group label{font-size:13px;font-weight:600;color:var(--text-primary);}
+        .form-group input,.form-group select{padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;outline:none;transition:all var(--transition);font-family:inherit;}
+        .form-group input:focus,.form-group select:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,0.08);}
+        .flex-row{display:flex;gap:12px;flex-wrap:wrap;}
+        .flex-row .form-group{flex:1;min-width:180px;}
+        .kanban{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;}
+        .loc-card{background:#fff;border-radius:var(--radius);border:1px solid var(--border);padding:20px;box-shadow:var(--shadow-sm);transition:all var(--transition);cursor:pointer;position:relative;overflow:hidden;}
+        .loc-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--primary);border-radius:0 4px 4px 0;opacity:0;transition:opacity var(--transition);}
+        .loc-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);border-color:#cbd5e1;}
+        .loc-card:hover::before{opacity:1;}
+        .loc-card h4{font-size:16px;margin-bottom:6px;color:var(--text-primary);font-weight:700;}
+        .loc-card .loc-type{font-size:12px;color:var(--text-muted);margin-bottom:10px;font-weight:500;}
+        .loc-card .count{font-size:32px;font-weight:700;color:var(--primary);margin:10px 0 14px;letter-spacing:-1px;}
+        .loc-card .loc-footer{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border-light);padding-top:12px;font-size:12px;color:var(--text-muted);}
+        .qr-container{text-align:center;padding:10px;}
+        .qr-container img{display:block;margin:15px auto;border:1px solid var(--border);border-radius:8px;padding:8px;background:#fff;}
+        .qr-container .qr-code-text{font-size:15px;font-weight:600;color:var(--text-primary);margin-top:8px;word-break:break-all;}
+        @media (max-width:768px){
+            .sidebar{width:60px;}.sidebar-logo{padding:16px 10px;font-size:0;justify-content:center;}.sidebar-logo .logo-icon{margin:0;}
+            .nav-item{padding:10px;justify-content:center;border-left:none;border-radius:8px;margin:2px 4px;}.nav-item span:not(.nav-icon){display:none;}.nav-group-title{display:none;}
+            .content{padding:16px;}.topbar{padding:12px 16px;}.topbar h2{font-size:16px;}
+            .toolbar{padding:10px 14px;gap:6px;}.toolbar input,.toolbar select{min-width:100px;font-size:12px;padding:6px 10px;}
+            .kanban{grid-template-columns:1fr;}
+            table{min-width:600px;font-size:12px;}table th,table td{padding:8px 10px;}
+        }
+    </style>
+</head>
+<body>
+<aside class="sidebar">
+    <div class="sidebar-logo"><span class="logo-icon">🏭</span> WMS 智能仓储</div>
+    <nav class="sidebar-nav">
+        <div class="nav-group"><div class="nav-group-title">📋 单据管理</div>
+            <div class="nav-item active" data-module="production-order"><span class="nav-icon">📋</span> <span>生产订单</span></div>
+            <div class="nav-item" data-module="material-requisition"><span class="nav-icon">📦</span> <span>备料指令单</span></div>
+            <div class="nav-item" data-module="shipment-order"><span class="nav-icon">🚚</span> <span>发货指令单</span></div>
+            <div class="nav-item" data-module="transfer-order"><span class="nav-icon">🔄</span> <span>调拨指令单</span></div>
+        </div>
+        <div class="nav-group"><div class="nav-group-title">🗂️ 基础数据</div>
+            <div class="nav-item" data-module="location-archive"><span class="nav-icon">📍</span> <span>库位档案</span></div>
+            <div class="nav-item" data-module="label-template"><span class="nav-icon">🏷️</span> <span>标签模板</span></div>
+            <div class="nav-item" data-module="user-mgmt"><span class="nav-icon">👤</span> <span>用户管理</span></div>
+        </div>
+        <div class="nav-group"><div class="nav-group-title">🖨️ 产品标签</div>
+            <div class="nav-item" data-module="label-record"><span class="nav-icon">🖨️</span> <span>标签打印记录</span></div>
+        </div>
+        <div class="nav-group"><div class="nav-group-title">📦 打托管理</div>
+            <div class="nav-item" data-module="pallet-doc"><span class="nav-icon">📦</span> <span>打托单据</span></div>
+        </div>
+        <div class="nav-group"><div class="nav-group-title">🏗️ 仓库管理</div>
+            <div class="nav-item" data-module="inventory-info"><span class="nav-icon">📊</span> <span>库存信息</span></div>
+            <div class="nav-item" data-module="move-record"><span class="nav-icon">🔄</span> <span>移库记录</span></div>
+            <div class="nav-item" data-module="pick-record"><span class="nav-icon">📋</span> <span>备料记录</span></div>
+            <div class="nav-item" data-module="inout-record"><span class="nav-icon">📥📤</span> <span>出入库记录</span></div>
+        </div>
+    </nav>
+</aside>
+
+<main class="main">
+    <header class="topbar"><h2 id="pageTitle">生产订单</h2><div class="user-info"><span class="user-avatar">张</span> 管理员：张工</div></header>
+    <div class="content" id="pageContent">
+        <div class="card"><div class="card-header"><span>📋 生产订单列表</span><button class="btn btn-primary btn-sm" data-action="addProductionOrder">+ 新增订单</button></div>
+        <div class="toolbar">
+            <input placeholder="🔍 生产单号" id="poNoFilter" value=""><input placeholder="🔍 销售单号" id="soNoFilter" value="">
+            <input type="date" id="poStart"><span class="date-separator">至</span><input type="date" id="poEnd">
+            <select id="poCategoryFilter"><option value="">全部类别</option><option>成品</option><option>辅料</option><option>半成品</option></select>
+            <button class="btn btn-primary btn-sm" id="searchPoBtn">🔍 查询</button><button class="btn btn-outline btn-sm" id="resetPoBtn">↻ 重置</button>
+        </div>
+        <div class="card-body"><table><thead><tr><th>生产单号</th><th>销售单号</th><th>存货编码</th><th>存货名称</th><th>客户编码</th><th>产品类别</th><th>规格型号</th><th>创建时间</th><th>状态</th><th>操作</th></tr></thead>
+        <tbody>
+        <tr><td><strong>SC20260429001</strong></td><td>SO001</td><td>INV-20240056</td><td>精密轴承组件</td><td>CUST001</td><td>成品</td><td>BRG-6205-2RS</td><td>2026-04-29 08:30</td><td><span class="tag tag-success">启用</span></td>
+        <td><div class="table-actions">
+            <button class="btn btn-outline btn-xs" data-action="editProductionOrder" data-id="po1" title="编辑">✏️</button>
+            <button class="btn btn-danger btn-xs" data-action="deleteProductionOrder" data-id="po1" title="删除">🗑️</button>
+            <button class="btn btn-outline btn-xs" data-action="previewQRCode" data-po="SC20260429001" title="二维码">📱</button>
+        </div></td></tr><tr><td><strong>SC20260429002</strong></td><td>SO002</td><td>INV-20240078</td><td>不锈钢垫片</td><td>CUST002</td><td>辅料</td><td>SP-304-10</td><td>2026-04-29 10:15</td><td><span class="tag tag-success">启用</span></td>
+        <td><div class="table-actions">
+            <button class="btn btn-outline btn-xs" data-action="editProductionOrder" data-id="po2" title="编辑">✏️</button>
+            <button class="btn btn-danger btn-xs" data-action="deleteProductionOrder" data-id="po2" title="删除">🗑️</button>
+            <button class="btn btn-outline btn-xs" data-action="previewQRCode" data-po="SC20260429002" title="二维码">📱</button>
+        </div></td></tr><tr><td><strong>SC20260429003</strong></td><td>SO003</td><td>INV-20240102</td><td>铝合金外壳</td><td>CUST003</td><td>半成品</td><td>AL-CASE-08</td><td>2026-04-30 09:00</td><td><span class="tag tag-success">启用</span></td>
+        <td><div class="table-actions">
+            <button class="btn btn-outline btn-xs" data-action="editProductionOrder" data-id="po3" title="编辑">✏️</button>
+            <button class="btn btn-danger btn-xs" data-action="deleteProductionOrder" data-id="po3" title="删除">🗑️</button>
+            <button class="btn btn-outline btn-xs" data-action="previewQRCode" data-po="SC20260429003" title="二维码">📱</button>
+        </div></td></tr></tbody></table></div></div></div>
+</main>
+
+<div class="modal-overlay hidden" id="modalOverlay">
+    <div class="modal" id="modalBox">
+        <div class="modal-header"><span id="modalTitle">详情</span><button class="btn btn-ghost btn-sm" id="closeModalBtn">✕</button></div>
+        <div class="modal-body" id="modalBody"></div>
+    </div>
+</div>
+
+<script>
+    // ========== 完整模拟数据 ==========
+    let store = {
+        productionOrders: [
+            { id: 'po1', 生产单号:'SC20260429001', 销售单号:'SO001', 存货编码:'INV-20240056', 存货名称:'精密轴承组件', 客户编码:'CUST001', 产品类别:'成品', 规格型号:'BRG-6205-2RS', 状态:true, 创建时间:'2026-04-29 08:30' },
+            { id: 'po2', 生产单号:'SC20260429002', 销售单号:'SO002', 存货编码:'INV-20240078', 存货名称:'不锈钢垫片', 客户编码:'CUST002', 产品类别:'辅料', 规格型号:'SP-304-10', 状态:true, 创建时间:'2026-04-29 10:15' },
+            { id: 'po3', 生产单号:'SC20260429003', 销售单号:'SO003', 存货编码:'INV-20240102', 存货名称:'铝合金外壳', 客户编码:'CUST003', 产品类别:'半成品', 规格型号:'AL-CASE-08', 状态:true, 创建时间:'2026-04-30 09:00' },
+        ],
+        materialRequisitions: [
+            { id: 'mr1', 指令单号:'PO-20260501-001', 生产单号:'SC20260429001', 产品名称:'精密轴承组件', 规格型号:'BRG-6205-2RS', 产品类别:'成品', 数量:200, 备料状态:'待备料', 创建时间:'2026-05-01 09:00', 要求完成时间:'2026-05-03' },
+            { id: 'mr2', 指令单号:'PO-20260501-002', 生产单号:'SC20260429002', 产品名称:'不锈钢垫片', 规格型号:'SP-304-10', 产品类别:'辅料', 数量:500, 备料状态:'已完成', 创建时间:'2026-05-01 10:30', 要求完成时间:'2026-05-04' },
+        ],
+        shipmentOrders: [
+            { id: 'so1', 指令单号:'SH20260508001', 用友订单号:'UF-2026001', 批号:'BATCH-001', 仓库名称:'成品仓A', 存货编码:'INV-20240056', 存货名称:'精密轴承组件', 规格型号:'BRG-6205-2RS', 产品材质:'轴承钢', 数量单位:'个', 数里:100, 数量:100, 重量:250.5, 单重:2.505, 包装方式:'纸箱', 规格片宽:'30mm', 客户编码:'CUST001', 存货代码:'BRG-6205', 状态:'待发货', 创建时间:'2026-05-08 09:00', 备注:'加急' },
+            { id: 'so2', 指令单号:'SH20260508002', 用友订单号:'UF-2026002', 批号:'BATCH-002', 仓库名称:'辅料仓B', 存货编码:'INV-20240078', 存货名称:'不锈钢垫片', 规格型号:'SP-304-10', 产品材质:'304不锈钢', 数量单位:'片', 数里:300, 数量:300, 重量:15.0, 单重:0.05, 包装方式:'塑料袋', 规格片宽:'10mm', 客户编码:'CUST002', 存货代码:'SP-304', 状态:'部分发货', 创建时间:'2026-05-08 10:30', 备注:'' },
+            { id: 'so3', 指令单号:'SH20260509001', 用友订单号:'UF-2026003', 批号:'BATCH-003', 仓库名称:'半成品仓C', 存货编码:'INV-20240102', 存货名称:'铝合金外壳', 规格型号:'AL-CASE-08', 产品材质:'6061铝', 数量单位:'件', 数里:50, 数量:50, 重量:120.0, 单重:2.4, 包装方式:'木箱', 规格片宽:'80mm', 客户编码:'CUST003', 存货代码:'AL-CASE08', 状态:'已完成', 创建时间:'2026-05-09 08:15', 备注:'优先处理' }
+        ],
+        transferOrders: [
+            { id: 'tr1', 指令单号:'TR20260518001', 用友调拨单号:'UF-TR-001', 制令单号:'SC20260429001', 转出仓库:'成品仓A', 转入仓库:'成品仓B', 批号:'BATCH-001', 存货编码:'INV-20240056', 存货名称:'精密轴承组件', 规格型号:'BRG-6205-2RS', 单位:'个', 数量:50, 重量:125.0, 规格片宽:'30mm', 客户编码:'CUST001', 母材批号:'M-BATCH-01', 包装方式:'纸箱', 创建时间:'2026-05-18 09:00' },
+            { id: 'tr2', 指令单号:'TR20260518002', 用友调拨单号:'UF-TR-002', 制令单号:'SC20260429002', 转出仓库:'辅料仓B', 转入仓库:'辅料仓C', 批号:'BATCH-002', 存货编码:'INV-20240078', 存货名称:'不锈钢垫片', 规格型号:'SP-304-10', 单位:'片', 数量:200, 重量:10.0, 规格片宽:'10mm', 客户编码:'CUST002', 母材批号:'M-BATCH-02', 包装方式:'塑料袋', 创建时间:'2026-05-18 10:30' },
+            { id: 'tr3', 指令单号:'TR20260519001', 用友调拨单号:'UF-TR-003', 制令单号:'SC20260429003', 转出仓库:'半成品仓C', 转入仓库:'半成品仓A', 批号:'BATCH-003', 存货编码:'INV-20240102', 存货名称:'铝合金外壳', 规格型号:'AL-CASE-08', 单位:'件', 数量:20, 重量:48.0, 规格片宽:'80mm', 客户编码:'CUST003', 母材批号:'M-BATCH-03', 包装方式:'木箱', 创建时间:'2026-05-19 08:15' }
+        ],
+        locations: [
+            { id: 'loc1', 库位编码:'A-01-01', 库位类型:'货架区', 状态:'空闲', 创建时间:'2026-04-01' },
+            { id: 'loc2', 库位编码:'A-01-02', 库位类型:'货架区', 状态:'占用', 创建时间:'2026-04-01' },
+            { id: 'loc3', 库位编码:'B-02-03', 库位类型:'货架区', 状态:'空闲', 创建时间:'2026-04-01' },
+            { id: 'loc4', 库位编码:'RECV-01', 库位类型:'收料区', 状态:'空闲', 创建时间:'2026-04-01' },
+            { id: 'loc5', 库位编码:'RECV-02', 库位类型:'收料区', 状态:'占用', 创建时间:'2026-04-01' },
+            { id: 'loc6', 库位编码:'PREP-01', 库位类型:'备货区', 状态:'空闲', 创建时间:'2026-04-01' },
+            { id: 'loc7', 库位编码:'PREP-02', 库位类型:'备货区', 状态:'空闲', 创建时间:'2026-04-01' },
+        ],
+        templates: [
+            { id: 't1', 模板名称:'标准产品标签', 纸张尺寸:'50×30mm', 模板类型:'标签模板', 创建时间:'2026-04-15' },
+            { id: 't2', 模板名称:'生产单模板A', 纸张尺寸:'A4', 模板类型:'生产单模板', 创建时间:'2026-04-20' },
+            { id: 't3', 模板名称:'发货标签模板', 纸张尺寸:'60×40mm', 模板类型:'标签模板', 创建时间:'2026-04-25' },
+        ],
+        labelRecords: [
+            { id: 'lr1', 条码号:'BAR-20260429-001', 生产单号:'SC20260429001', 产品名称:'精密轴承组件', 规格型号:'BRG-6205-2RS', 数量:120, 打印时间:'2026-05-06 09:30', 打印人:'张工', 状态:'正常' },
+            { id: 'lr2', 条码号:'BAR-20260429-002', 生产单号:'SC20260429001', 产品名称:'精密轴承组件', 规格型号:'BRG-6205-2RS', 数量:80, 打印时间:'2026-05-06 10:15', 打印人:'张工', 状态:'正常' },
+            { id: 'lr3', 条码号:'BAR-20260429-003', 生产单号:'SC20260429003', 产品名称:'铝合金外壳', 规格型号:'AL-CASE-08', 数量:200, 打印时间:'2026-05-06 11:00', 打印人:'张工', 状态:'已作废' },
+        ],
+        palletDocs: [
+            { id: 'pd1', 托盘号:'TP-20260429-001', 总件数:30, 打托时间:'2026-05-06 14:00', 操作人员:'张工', 明细:[{ 生产单号:'SC20260429001', 产品名称:'精密轴承组件', 存货编码:'INV-20240056', 数量:30 }] },
+            { id: 'pd2', 托盘号:'TP-20260507-002', 总件数:50, 打托时间:'2026-05-07 11:20', 操作人员:'李主管', 明细:[{ 生产单号:'SC20260429002', 产品名称:'不锈钢垫片', 存货编码:'INV-20240078', 数量:50 }] }
+        ],
+        users: [
+            { id: 'u1', 用户名:'zhang', 姓名:'张工', 角色:'操作员', 状态:'启用', 创建时间:'2026-04-01' },
+            { id: 'u2', 用户名:'li', 姓名:'李主管', 角色:'仓管经理', 状态:'启用', 创建时间:'2026-04-02' },
+        ],
+        inventoryList: [
+            { id: 'inv1', 存货编码:'INV-20240056', 产品名称:'精密轴承组件', 规格:'BRG-6205-2RS', 库位编码:'A-01-01', 库位类型:'货架区', 数量:320, 生产单号:'SC20260429001' },
+            { id: 'inv2', 存货编码:'INV-20240078', 产品名称:'不锈钢垫片', 规格:'SP-304-10', 库位编码:'A-01-02', 库位类型:'货架区', 数量:150, 生产单号:'SC20260429002' },
+            { id: 'inv3', 存货编码:'INV-20240102', 产品名称:'铝合金外壳', 规格:'AL-CASE-08', 库位编码:'RECV-01', 库位类型:'收料区', 数量:80, 生产单号:'SC20260429003' },
+            { id: 'inv4', 存货编码:'INV-20240056', 产品名称:'精密轴承组件', 规格:'BRG-6205-2RS', 库位编码:'PREP-01', 库位类型:'备货区', 数量:60, 生产单号:'SC20260429001' },
+            { id: 'inv5', 存货编码:'INV-20240078', 产品名称:'不锈钢垫片', 规格:'SP-304-10', 库位编码:'PREP-02', 库位类型:'备货区', 数量:200, 生产单号:'SC20260429002' },
+        ],
+        moveRecords: [
+            { id: 'mv1', 移库单号:'MV20260506001', 产品名称:'精密轴承组件', 存货编码:'INV-20240056', 规格型号:'BRG-6205-2RS', 数量:80, 原库位:'RECV-01', 目前库位:'A-01-01', 移库时间:'2026-05-06 14:00', 操作人:'张工', 明细:[{ 生产单号:'SC20260429001', 产品名称:'精密轴承组件', 规格型号:'BRG-6205-2RS', 产品类别:'成品', 存货编码:'INV-20240056', 数量:80 }] },
+            { id: 'mv2', 移库单号:'MV20260507002', 产品名称:'不锈钢垫片', 存货编码:'INV-20240078', 规格型号:'SP-304-10', 数量:50, 原库位:'PREP-01', 目前库位:'A-01-02', 移库时间:'2026-05-07 09:30', 操作人:'李主管', 明细:[{ 生产单号:'SC20260429002', 产品名称:'不锈钢垫片', 规格型号:'SP-304-10', 产品类别:'辅料', 存货编码:'INV-20240078', 数量:50 }] },
+            { id: 'mv3', 移库单号:'MV20260508003', 产品名称:'铝合金外壳', 存货编码:'INV-20240102', 规格型号:'AL-CASE-08', 数量:30, 原库位:'RECV-02', 目前库位:'B-02-03', 移库时间:'2026-05-08 10:15', 操作人:'张工', 明细:[{ 生产单号:'SC20260429003', 产品名称:'铝合金外壳', 规格型号:'AL-CASE-08', 产品类别:'半成品', 存货编码:'INV-20240102', 数量:30 }] },
+        ],
+        pickRecords: [
+            { id: 'pr1', 指令单号:'PO-20260501-002', 产品名称:'不锈钢垫片', 存货编码:'INV-20240078', 规格型号:'SP-304-10', 备料数量:500, 备料库位:'PREP-02', 备料时间:'2026-05-04 15:20', 操作人:'张工' },
+            { id: 'pr2', 指令单号:'PO-20260501-001', 产品名称:'精密轴承组件', 存货编码:'INV-20240056', 规格型号:'BRG-6205-2RS', 备料数量:200, 备料库位:'PREP-01', 备料时间:'2026-05-03 11:10', 操作人:'李主管' },
+        ],
+        inoutRecords: [
+            { id: 'io1', 单据号:'IN20260506001', 库位:'A-01-01', 数量:120, 类型:'入库', 操作时间:'2026-05-06 09:00', 操作人:'张工', 明细:[{ 生产单号:'SC20260429001', 存货编码:'INV-20240056', 产品名称:'精密轴承组件', 规格型号:'BRG-6205-2RS', 数量:120 }] },
+            { id: 'io2', 单据号:'OUT20260507001', 库位:'RECV-01', 数量:30, 类型:'出库', 操作时间:'2026-05-07 10:30', 操作人:'李主管', 明细:[{ 生产单号:'SC20260429003', 存货编码:'INV-20240102', 产品名称:'铝合金外壳', 规格型号:'AL-CASE-08', 数量:30 }] },
+            { id: 'io3', 单据号:'IN20260508002', 库位:'PREP-01', 数量:60, 类型:'入库', 操作时间:'2026-05-08 14:20', 操作人:'张工', 明细:[{ 生产单号:'SC20260429001', 存货编码:'INV-20240056', 产品名称:'精密轴承组件', 规格型号:'BRG-6205-2RS', 数量:60 }] }
+        ]
+    };
+
+    let currentModule = 'production-order';
+    let filters = {};
+
+    function escapeHtml(str){ if(!str) return ''; return str.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m; }); }
+
+    function renderPage(module){
+        currentModule = module;
+        const titleMap = {
+            'production-order':'生产订单', 'material-requisition':'备料指令单', 'shipment-order':'发货指令单',
+            'transfer-order':'调拨指令单', 'location-archive':'库位档案', 'label-template':'标签模板',
+            'label-record':'标签打印记录', 'pallet-doc':'打托单据', 'inventory-info':'库存信息',
+            'move-record':'移库记录', 'pick-record':'备料记录', 'inout-record':'出入库记录', 'user-mgmt':'用户管理'
+        };
+        document.getElementById('pageTitle').textContent = titleMap[module] || '管理';
+        const html = buildModuleHTML(module);
+        document.getElementById('pageContent').innerHTML = html;
+        attachModuleEvents(module);
+    }
+
+    // ================= 各模块构建函数 (全部完整) =================
+    function buildProductionOrdersHTML(){
+        let list = store.productionOrders;
+        if(filters.poNo) list = list.filter(o => o.生产单号.includes(filters.poNo));
+        if(filters.soNo) list = list.filter(o => o.销售单号.includes(filters.soNo));
+        if(filters.poCategory) list = list.filter(o => o.产品类别 === filters.poCategory);
+        if(filters.poStartDate && filters.poEndDate) list = list.filter(o => o.创建时间 >= filters.poStartDate && o.创建时间 <= filters.poEndDate);
+        return `
+        <div class="card"><div class="card-header"><span>📋 生产订单列表</span><button class="btn btn-primary btn-sm" data-action="addProductionOrder">+ 新增订单</button></div>
+        <div class="toolbar">
+            <input placeholder="🔍 生产单号" id="poNoFilter" value="${filters.poNo||''}"><input placeholder="🔍 销售单号" id="soNoFilter" value="${filters.soNo||''}">
+            <input type="date" id="poStart"><span class="date-separator">至</span><input type="date" id="poEnd">
+            <select id="poCategoryFilter"><option value="">全部类别</option><option ${filters.poCategory==='成品'?'selected':''}>成品</option><option ${filters.poCategory==='辅料'?'selected':''}>辅料</option><option ${filters.poCategory==='半成品'?'selected':''}>半成品</option></select>
+            <button class="btn btn-primary btn-sm" id="searchPoBtn">🔍 查询</button><button class="btn btn-outline btn-sm" id="resetPoBtn">↻ 重置</button>
+        </div>
+        <div class="card-body"><table><thead><tr><th>生产单号</th><th>销售单号</th><th>存货编码</th><th>存货名称</th><th>客户编码</th><th>产品类别</th><th>规格型号</th><th>创建时间</th><th>状态</th><th>操作</th></tr></thead>
+        <tbody>${list.length===0?'<tr><td colspan="10" style="text-align:center;color:#94a3b8;padding:30px;">暂无数据</td></tr>':''}
+        ${list.map(o => `<tr><td><strong>${o.生产单号}</strong></td><td>${o.销售单号}</td><td>${o.存货编码}</td><td>${o.存货名称}</td><td>${o.客户编码}</td><td>${o.产品类别}</td><td>${o.规格型号}</td><td>${o.创建时间}</td><td><span class="tag tag-success">启用</span></td>
+        <td><div class="table-actions">
+            <button class="btn btn-outline btn-xs" data-action="editProductionOrder" data-id="${o.id}" title="编辑">✏️</button>
+            <button class="btn btn-danger btn-xs" data-action="deleteProductionOrder" data-id="${o.id}" title="删除">🗑️</button>
+            <button class="btn btn-outline btn-xs" data-action="previewQRCode" data-po="${o.生产单号}" title="二维码">📱</button>
+        </div></td></tr>`).join('')}</tbody></table></div></div>`;
+    }
+
+    function buildMaterialReqHTML(){
+        let list = store.materialRequisitions;
+        if(filters.mrNo) list = list.filter(o => o.指令单号.includes(filters.mrNo) || o.生产单号.includes(filters.mrNo));
+        if(filters.mrProduct) list = list.filter(o => o.产品名称.includes(filters.mrProduct));
+        if(filters.mrSpec) list = list.filter(o => o.规格型号.includes(filters.mrSpec));
+        if(filters.mrCategory) list = list.filter(o => o.产品类别 === filters.mrCategory);
+        if(filters.mrStart && filters.mrEnd) list = list.filter(o => o.创建时间 >= filters.mrStart && o.创建时间 <= filters.mrEnd);
+        return `
+        <div class="card"><div class="card-header"><span>📦 备料指令单列表</span><button class="btn btn-primary btn-sm" data-action="addMaterialReq">+ 新增指令单</button></div>
+        <div class="toolbar">
+            <input placeholder="🔍 指令单号/生产单号" id="mrNoFilter" value="${filters.mrNo||''}"><input placeholder="🔍 产品名称" id="mrProductFilter" value="${filters.mrProduct||''}"><input placeholder="🔍 规格型号" id="mrSpecFilter" value="${filters.mrSpec||''}">
+            <input type="date" id="mrStart"><span class="date-separator">至</span><input type="date" id="mrEnd">
+            <select id="mrCategoryFilter"><option value="">全部类别</option><option ${filters.mrCategory==='成品'?'selected':''}>成品</option><option ${filters.mrCategory==='辅料'?'selected':''}>辅料</option><option ${filters.mrCategory==='半成品'?'selected':''}>半成品</option></select>
+            <button class="btn btn-primary btn-sm" id="searchMrBtn">🔍 查询</button><button class="btn btn-outline btn-sm" id="resetMrBtn">↻ 重置</button>
+        </div>
+        <div class="card-body"><table><thead><tr><th>指令单号</th><th>生产单号</th><th>产品名称</th><th>规格型号</th><th>产品类别</th><th>数量</th><th>备料状态</th><th>创建时间</th><th>要求完成时间</th><th>操作</th></tr></thead>
+        <tbody>${list.length===0?'<tr><td colspan="10" style="text-align:center;color:#94a3b8;padding:30px;">暂无数据</td></tr>':''}
+        ${list.map(r => `<tr><td><strong>${r.指令单号}</strong></td><td>${r.生产单号}</td><td>${r.产品名称}</td><td>${r.规格型号}</td><td>${r.产品类别}</td><td><strong>${r.数量}</strong></td><td><span class="tag ${r.备料状态==='待备料'?'tag-warning':'tag-success'}">${r.备料状态}</span></td><td>${r.创建时间}</td><td>${r.要求完成时间}</td><td><div class="table-actions"><button class="btn btn-outline btn-xs" data-action="editMaterialReq" data-id="${r.id}">✏️</button><button class="btn btn-danger btn-xs" data-action="deleteMaterialReq" data-id="${r.id}">🗑️</button></div></td></tr>`).join('')}</tbody></table></div></div>`;
+    }
+
+    function buildShipmentOrderHTML(){
+        let list = store.shipmentOrders;
+        if(filters.shipOrderNo) list = list.filter(o => o.指令单号.includes(filters.shipOrderNo));
+        if(filters.shipInvCode) list = list.filter(o => o.存货编码.includes(filters.shipInvCode));
+        if(filters.shipCustCode) list = list.filter(o => o.客户编码.includes(filters.shipCustCode));
+        if(filters.shipStart && filters.shipEnd) list = list.filter(o => o.创建时间 >= filters.shipStart && o.创建时间 <= filters.shipEnd);
+        return `
+        <div class="card"><div class="card-header"><span>🚚 发货指令单列表</span><button class="btn btn-primary btn-sm" data-action="addShipmentOrder">+ 新增发货单</button></div>
+        <div class="toolbar">
+            <input placeholder="🔍 指令单号" id="shipOrderNoFilter" value="${filters.shipOrderNo||''}">
+            <input placeholder="🔍 存货编码" id="shipInvCodeFilter" value="${filters.shipInvCode||''}">
+            <input placeholder="🔍 客户编码" id="shipCustCodeFilter" value="${filters.shipCustCode||''}">
+            <input type="date" id="shipStart"><span class="date-separator">至</span><input type="date" id="shipEnd">
+            <button class="btn btn-primary btn-sm" id="searchShipBtn">🔍 查询</button><button class="btn btn-outline btn-sm" id="resetShipBtn">↻ 重置</button>
+        </div>
+        <div class="card-body"><table><thead><tr>
+            <th>指令单号</th><th>用友订单号</th><th>批号</th><th>仓库名称</th><th>存货编码</th><th>存货名称</th><th>规格型号</th><th>产品材质</th><th>数量单位</th><th>数里</th><th>数量</th><th>重量</th><th>单重</th><th>包装方式</th><th>规格片宽</th><th>客户编码</th><th>存货代码</th><th>状态</th><th>创建时间</th><th>备注</th><th>操作</th>
+        </tr></thead>
+        <tbody>${list.length===0?'<tr><td colspan="21" style="text-align:center;color:#94a3b8;padding:30px;">暂无数据</td></tr>':''}
+        ${list.map(s => { let statusTag = 'tag-info'; if(s.状态==='待发货') statusTag='tag-warning'; else if(s.状态==='部分发货') statusTag='tag-danger'; else if(s.状态==='已完成') statusTag='tag-success'; return `
+        <tr>
+            <td><strong>${s.指令单号}</strong></td><td>${s.用友订单号||'-'}</td><td>${s.批号||'-'}</td><td>${s.仓库名称||'-'}</td><td>${s.存货编码||'-'}</td><td>${s.存货名称||'-'}</td><td>${s.规格型号||'-'}</td><td>${s.产品材质||'-'}</td><td>${s.数量单位||'-'}</td><td>${s.数里??'-'}</td><td><strong>${s.数量}</strong></td><td>${s.重量??'-'}</td><td>${s.单重??'-'}</td><td>${s.包装方式||'-'}</td><td>${s.规格片宽||'-'}</td><td>${s.客户编码||'-'}</td><td>${s.存货代码||'-'}</td>
+            <td><span class="tag ${statusTag}">${s.状态}</span></td><td>${s.创建时间}</td><td>${s.备注||'<span style="color:#cbd5e1;">-</span>'}</td>
+            <td><div class="table-actions"><button class="btn btn-outline btn-xs" data-action="editShipmentOrder" data-id="${s.id}">✏️</button><button class="btn btn-danger btn-xs" data-action="deleteShipmentOrder" data-id="${s.id}">🗑️</button></div></td>
+        </tr>`; }).join('')}</tbody></table></div></div>`;
+    }
+
+    function buildTransferOrderHTML(){
+        let list = store.transferOrders;
+        if(filters.transferNo) {
+            let keyword = filters.transferNo;
+            list = list.filter(o => o.指令单号.includes(keyword) || o.用友调拨单号.includes(keyword) || o.制令单号.includes(keyword));
+        }
+        if(filters.transferProduct) list = list.filter(o => o.存货名称.includes(filters.transferProduct));
+        if(filters.transferSpec) list = list.filter(o => o.规格型号.includes(filters.transferSpec));
+        if(filters.transferStart && filters.transferEnd) list = list.filter(o => o.创建时间 >= filters.transferStart && o.创建时间 <= filters.transferEnd);
+        return `
+        <div class="card"><div class="card-header"><span>🔄 调拨指令单列表</span><button class="btn btn-primary btn-sm" data-action="addTransferOrder">+ 新增调拨单</button></div>
+        <div class="toolbar">
+            <input placeholder="🔍 制令单号/用友调拨单号" id="transferNoFilter" value="${filters.transferNo||''}">
+            <input placeholder="🔍 存货名称" id="transferProductFilter" value="${filters.transferProduct||''}">
+            <input placeholder="🔍 规格型号" id="transferSpecFilter" value="${filters.transferSpec||''}">
+            <input type="date" id="transferStart"><span class="date-separator">至</span><input type="date" id="transferEnd">
+            <button class="btn btn-primary btn-sm" id="searchTransferBtn">🔍 查询</button><button class="btn btn-outline btn-sm" id="resetTransferBtn">↻ 重置</button>
+        </div>
+        <div class="card-body"><table><thead><tr>
+            <th>指令单号</th><th>用友调拨单号</th><th>转出仓库</th><th>转入仓库</th><th>批号</th><th>存货编码</th><th>存货名称</th><th>规格型号</th><th>单位</th><th>数量</th><th>重量</th><th>规格片宽</th><th>客户编码</th><th>母材批号</th><th>包装方式</th><th>创建时间</th><th>操作</th>
+        </tr></thead>
+        <tbody>${list.length===0?'<tr><td colspan="17" style="text-align:center;color:#94a3b8;padding:30px;">暂无数据</td></tr>':''}
+        ${list.map(t => `<tr>
+            <td><strong>${t.指令单号}</strong></td><td>${t.用友调拨单号||'-'}</td><td>${t.转出仓库||'-'}</td><td>${t.转入仓库||'-'}</td><td>${t.批号||'-'}</td><td>${t.存货编码||'-'}</td><td>${t.存货名称||'-'}</td><td>${t.规格型号||'-'}</td><td>${t.单位||'-'}</td><td><strong>${t.数量}</strong></td><td>${t.重量??'-'}</td><td>${t.规格片宽||'-'}</td><td>${t.客户编码||'-'}</td><td>${t.母材批号||'-'}</td><td>${t.包装方式||'-'}</td><td>${t.创建时间}</td>
+            <td><div class="table-actions"><button class="btn btn-outline btn-xs" data-action="editTransferOrder" data-id="${t.id}">✏️</button><button class="btn btn-danger btn-xs" data-action="deleteTransferOrder" data-id="${t.id}">🗑️</button></div></td>
+        </tr>`).join('')}</tbody></table></div></div>`;
+    }
+
+    function buildLocationsHTML(){
+        let list = store.locations;
+        if(filters.locCode) list = list.filter(l => l.库位编码.includes(filters.locCode));
+        if(filters.locType) list = list.filter(l => l.库位类型 === filters.locType);
+        return `
+        <div class="card"><div class="card-header"><span>📍 库位档案列表</span><button class="btn btn-primary btn-sm" data-action="addLocation">+ 新增库位</button></div>
+        <div class="toolbar">
+            <input placeholder="🔍 库位编码" id="locCodeFilter" value="${filters.locCode||''}">
+            <select id="locTypeFilter"><option value="">全部类型</option><option ${filters.locType==='收料区'?'selected':''}>收料区</option><option ${filters.locType==='备货区'?'selected':''}>备货区</option><option ${filters.locType==='货架区'?'selected':''}>货架区</option></select>
+            <button class="btn btn-primary btn-sm" id="searchLocBtn">🔍 查询</button><button class="btn btn-outline btn-sm" id="resetLocBtn">↻ 重置</button>
+        </div>
+        <div class="card-body"><table><thead><tr><th>库位编码</th><th>库位类型</th><th>状态</th><th>创建时间</th><th>操作</th></tr></thead>
+        <tbody>${list.length===0?'<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:30px;">暂无数据</td></tr>':''}
+        ${list.map(l => `<tr><td><strong>${l.库位编码}</strong></td><td>${l.库位类型}</td><td><span class="tag ${l.状态==='空闲'?'tag-success':'tag-warning'}">${l.状态}</span></td><td>${l.创建时间}</td><td><div class="table-actions"><button class="btn btn-outline btn-xs" data-action="editLocation" data-id="${l.id}">✏️</button><button class="btn btn-danger btn-xs" data-action="deleteLocation" data-id="${l.id}">🗑️</button></div></td></tr>`).join('')}</tbody></table></div></div>`;
+    }
+
+    function buildLabelTemplateHTML(){
+        let list = store.templates;
+        if(filters.tempName) list = list.filter(t => t.模板名称.includes(filters.tempName));
+        return `
+        <div class="card"><div class="card-header"><span>🏷️ 标签模板列表</span><button class="btn btn-primary btn-sm" data-action="addTemplate">+ 新增模板</button></div>
+        <div class="toolbar">
+            <input placeholder="🔍 模板名称" id="tempNameFilter" value="${filters.tempName||''}">
+            <button class="btn btn-primary btn-sm" id="searchTempBtn">🔍 查询</button><button class="btn btn-outline btn-sm" id="resetTempBtn">↻ 重置</button>
+        </div>
+        <div class="card-body"><table><thead><tr><th>模板名称</th><th>纸张尺寸</th><th>模板类型</th><th>创建时间</th><th>操作</th></tr></thead>
+        <tbody>${list.length===0?'<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:30px;">暂无数据</td></tr>':''}
+        ${list.map(t => `<tr><td><strong>${t.模板名称}</strong></td><td>${t.纸张尺寸}</td><td>${t.模板类型}</td><td>${t.创建时间}</td><td><div class="table-actions"><button class="btn btn-outline btn-xs" data-action="editTemplate" data-id="${t.id}">✏️</button><button class="btn btn-danger btn-xs" data-action="deleteTemplate" data-id="${t.id}">🗑️</button></div></td></tr>`).join('')}</tbody></table></div></div>`;
+    }
+
+    function buildMoveRecordHTML(){
+        let list = store.moveRecords;
+        if(filters.moveNo) list = list.filter(m => m.移库单号.includes(filters.moveNo));
+        if(filters.moveProduct) list = list.filter(m => m.产品名称.includes(filters.moveProduct));
+        return `
+        <div class="card"><div class="card-header"><span>🔄 移库记录列表</span></div>
+        <div class="toolbar">
+            <input placeholder="🔍 移库单号" id="moveNoFilter" value="${filters.moveNo||''}">
+            <input placeholder="🔍 产品名称" id="moveProductFilter" value="${filters.moveProduct||''}">
+            <button class="btn btn-primary btn-sm" id="searchMoveBtn">🔍 查询</button><button class="btn btn-outline btn-sm" id="resetMoveBtn">↻ 重置</button>
+        </div>
+        <div class="card-body"><table class="clickable-table"><thead><tr><th>移库单号</th><th>产品名称</th><th>存货编码</th><th>规格型号</th><th>数量</th><th>原库位</th><th>目前库位</th><th>移库时间</th><th>操作人</th></tr></thead>
+        <tbody>${list.length===0?'<tr><td colspan="9" style="text-align:center;color:#94a3b8;padding:30px;">暂无数据</td></tr>':''}
+        ${list.map(m => `<tr data-id="${m.id}"><td><strong>${m.移库单号}</strong></td><td>${m.产品名称}</td><td>${m.存货编码}</td><td>${m.规格型号}</td><td><strong>${m.数量}</strong></td><td>${m.原库位}</td><td>${m.目前库位}</td><td>${m.移库时间}</td><td>${m.操作人}</td></tr>`).join('')}</tbody></table></div></div>`;
+    }
+
+    function buildUserMgmtHTML(){
+        let list = store.users;
+        if(filters.userName) list = list.filter(u => u.姓名.includes(filters.userName));
+        if(filters.userLogin) list = list.filter(u => u.用户名.includes(filters.userLogin));
+        return `
+        <div class="card"><div class="card-header"><span>👤 用户管理列表</span><button class="btn btn-primary btn-sm" data-action="addUser">+ 新增用户</button></div>
+        <div class="toolbar">
+            <input placeholder="🔍 用户名" id="userLoginFilter" value="${filters.userLogin||''}"><input placeholder="🔍 姓名" id="userNameFilter" value="${filters.userName||''}">
+            <button class="btn btn-primary btn-sm" id="searchUserBtn">🔍 查询</button><button class="btn btn-outline btn-sm" id="resetUserBtn">↻ 重置</button>
+        </div>
+        <div class="card-body"><table><thead><tr><th>用户名</th><th>姓名</th><th>角色</th><th>状态</th><th>创建时间</th><th>操作</th></tr></thead>
+        <tbody>${list.length===0?'<tr><td colspan="6" style="text-align:center;color:#94a3b8;padding:30px;">暂无数据</td></tr>':''}
+        ${list.map(u => `<tr><td><strong>${u.用户名}</strong></td><td>${u.姓名}</td><td>${u.角色}</td><td><span class="tag tag-success">${u.状态}</span></td><td>${u.创建时间}</td><td><div class="table-actions"><button class="btn btn-outline btn-xs" data-action="editUser" data-id="${u.id}">✏️</button><button class="btn btn-danger btn-xs" data-action="deleteUser" data-id="${u.id}">🗑️</button></div></td></tr>`).join('')}</tbody></table></div></div>`;
+    }
+
+    function buildLabelRecordHTML(){
+        let list = store.labelRecords;
+        if(filters.labelSpec) list = list.filter(l => l.规格型号.includes(filters.labelSpec));
+        if(filters.labelStart && filters.labelEnd) list = list.filter(l => l.打印时间 >= filters.labelStart && l.打印时间 <= filters.labelEnd);
+        return `
+        <div class="card"><div class="card-header"><span>🖨️ 标签打印记录</span></div>
+        <div class="toolbar">
+            <input placeholder="🔍 规格型号" id="labelSpecFilter" value="${filters.labelSpec||''}">
+            <input type="date" id="labelStart"><span class="date-separator">至</span><input type="date" id="labelEnd">
+            <button class="btn btn-primary btn-sm" id="searchLabelBtn">🔍 查询</button><button class="btn btn-outline btn-sm" id="resetLabelBtn">↻ 重置</button>
+        </div>
+        <div class="card-body"><table><thead><tr><th>条码号</th><th>生产单号</th><th>产品名称</th><th>规格型号</th><th>数量</th><th>打印时间</th><th>打印人</th><th>状态</th><th>操作</th></tr></thead>
+        <tbody>${list.length===0?'<tr><td colspan="9" style="text-align:center;color:#94a3b8;padding:30px;">暂无数据</td></tr>':''}
+        ${list.map(l => `<tr><td><strong>${l.条码号}</strong></td><td>${l.生产单号}</td><td>${l.产品名称}</td><td>${l.规格型号}</td><td><strong>${l.数量}</strong></td><td>${l.打印时间}</td><td>${l.打印人}</td><td><span class="tag ${l.状态==='正常'?'tag-success':'tag-danger'}">${l.状态}</span></td><td><div class="table-actions"><button class="btn btn-primary btn-xs" data-action="reprintLabel" data-id="${l.id}">🖨️ 补打</button><button class="btn btn-danger btn-xs" data-action="voidLabel" data-id="${l.id}">🗑️ 作废</button></div></td></tr>`).join('')}</tbody></table></div></div>`;
+    }
+
+    function buildPalletDocHTML(){
+        let list = store.palletDocs;
+        if(filters.palletNo) list = list.filter(p => p.托盘号.includes(filters.palletNo));
+        if(filters.palletStart && filters.palletEnd) list = list.filter(p => p.打托时间 >= filters.palletStart && p.打托时间 <= filters.palletEnd);
+        return `
+        <div class="card"><div class="card-header"><span>📦 打托单据列表</span></div>
+        <div class="toolbar">
+            <input placeholder="🔍 托盘号" id="palletNoFilter" value="${filters.palletNo||''}">
+            <input type="date" id="palletStart"><span class="date-separator">至</span><input type="date" id="palletEnd">
+            <button class="btn btn-primary btn-sm" id="searchPalletBtn">🔍 查询</button><button class="btn btn-outline btn-sm" id="resetPalletBtn">↻ 重置</button>
+        </div>
+        <div class="card-body"><table class="clickable-table"><thead><tr><th>托盘号</th><th>总件数</th><th>打托时间</th><th>操作人员</th><th>操作</th></tr></thead>
+        <tbody>${list.length===0?'<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:30px;">暂无数据</td></tr>':''}
+        ${list.map(p => `<tr data-id="${p.id}"><td><strong>${p.托盘号}</strong></td><td><strong>${p.总件数}</strong> 件</td><td>${p.打托时间}</td><td>${p.操作人员}</td><td><button class="btn btn-outline btn-xs" data-action="viewPalletDetail" data-id="${p.id}">📋 查看明细</button></td></tr>`).join('')}</tbody></table></div></div>`;
+    }
+
+    function buildInventoryInfoHTML(){
+        let groups = {};
+        store.inventoryList.forEach(item => { if(!groups[item.库位编码]) groups[item.库位编码] = { type: item.库位类型, items: [], total:0 }; groups[item.库位编码].items.push(item); groups[item.库位编码].total += item.数量; });
+        let cards = Object.entries(groups).map(([code, data]) => `<div class="loc-card" data-action="viewLocationDetail" data-loc="${code}"><h4>${code}</h4><div class="loc-type">📌 ${data.type}</div><div class="count">${data.total} <span style="font-size:14px;font-weight:400;color:#64748b;">件</span></div><div class="loc-footer"><span>📦 ${data.items.length} 种物料</span><span style="color:var(--primary);font-weight:600;">查看明细 →</span></div></div>`).join('');
+        return `<div class="card" style="background:transparent;border:none;box-shadow:none;"><div class="card-header" style="background:#fff;border-radius:10px 10px 0 0;"><span>📊 库存信息概览</span><span style="font-size:12px;color:var(--text-muted);font-weight:400;">共 ${Object.keys(groups).length} 个库位</span></div><div style="padding:8px 0;"></div><div class="kanban">${cards || '<div style="text-align:center;color:#94a3b8;padding:40px;">暂无库存数据</div>'}</div></div>`;
+    }
+
+    function buildPickRecordHTML(){
+        let list = store.pickRecords;
+        if(filters.pickNo) list = list.filter(p => p.指令单号.includes(filters.pickNo));
+        if(filters.pickProduct) list = list.filter(p => p.产品名称.includes(filters.pickProduct));
+        if(filters.pickSpec) list = list.filter(p => p.规格型号.includes(filters.pickSpec));
+        if(filters.pickStart && filters.pickEnd) list = list.filter(p => p.备料时间 >= filters.pickStart && p.备料时间 <= filters.pickEnd);
+        return `
+        <div class="card"><div class="card-header"><span>📋 备料记录列表</span></div>
+        <div class="toolbar">
+            <input placeholder="🔍 指令单号" id="pickNoFilter" value="${filters.pickNo||''}"><input placeholder="🔍 产品名称" id="pickProductFilter" value="${filters.pickProduct||''}"><input placeholder="🔍 规格型号" id="pickSpecFilter" value="${filters.pickSpec||''}">
+            <input type="date" id="pickStart"><span class="date-separator">至</span><input type="date" id="pickEnd">
+            <button class="btn btn-primary btn-sm" id="searchPickBtn">🔍 查询</button><button class="btn btn-outline btn-sm" id="resetPickBtn">↻ 重置</button>
+        </div>
+        <div class="card-body"><table><thead><tr><th>指令单号</th><th>产品名称</th><th>存货编码</th><th>规格型号</th><th>备料数量</th><th>备料库位</th><th>备料时间</th><th>操作人</th></tr></thead>
+        <tbody>${list.length===0?'<tr><td colspan="8" style="text-align:center;color:#94a3b8;padding:30px;">暂无数据</td></tr>':''}
+        ${list.map(p => `<tr><td><strong>${p.指令单号}</strong></td><td>${p.产品名称}</td><td>${p.存货编码}</td><td>${p.规格型号}</td><td><strong>${p.备料数量}</strong></td><td>${p.备料库位}</td><td>${p.备料时间}</td><td>${p.操作人}</td></tr>`).join('')}</tbody></table></div></div>`;
+    }
+
+    function buildInoutRecordHTML(){
+        let list = store.inoutRecords;
+        return `
+        <div class="card"><div class="card-header"><span>📥📤 出入库记录列表</span></div>
+        <div class="card-body"><table class="clickable-table"><thead><tr><th>单据号</th><th>库位</th><th>数量</th><th>类型</th><th>操作时间</th><th>操作人</th><th>操作</th></tr></thead>
+        <tbody>${list.length===0?'<tr><td colspan="7" style="text-align:center;color:#94a3b8;padding:30px;">暂无数据</td></tr>':''}
+        ${list.map(r => `<tr data-id="${r.id}"><td><strong>${r.单据号}</strong></td><td>${r.库位}</td><td><strong>${r.数量}</strong></td><td><span class="tag ${r.类型==='入库'?'tag-success':'tag-warning'}">${r.类型}</span></td><td>${r.操作时间}</td><td>${r.操作人}</td><td><div class="table-actions"><button class="btn btn-outline btn-xs" data-action="viewInoutDetail" data-id="${r.id}">📋 明细</button><button class="btn btn-danger btn-xs" data-action="voidInout" data-id="${r.id}">🗑️ 作废</button></div></td></tr>`).join('')}</tbody></table></div></div>`;
+    }
+
+    function buildModuleHTML(module){
+        switch(module){
+            case 'production-order': return buildProductionOrdersHTML();
+            case 'material-requisition': return buildMaterialReqHTML();
+            case 'shipment-order': return buildShipmentOrderHTML();
+            case 'transfer-order': return buildTransferOrderHTML();
+            case 'location-archive': return buildLocationsHTML();
+            case 'label-template': return buildLabelTemplateHTML();
+            case 'label-record': return buildLabelRecordHTML();
+            case 'pallet-doc': return buildPalletDocHTML();
+            case 'inventory-info': return buildInventoryInfoHTML();
+            case 'move-record': return buildMoveRecordHTML();
+            case 'pick-record': return buildPickRecordHTML();
+            case 'inout-record': return buildInoutRecordHTML();
+            case 'user-mgmt': return buildUserMgmtHTML();
+            default: return '<div style="text-align:center;padding:60px;color:#94a3b8;">模块加载中...</div>';
+        }
+    }
+
+    // ========== 事件绑定与筛选 ==========
+    function attachModuleEvents(module){
+        const content = document.getElementById('pageContent');
+        if(!content) return;
+        content.querySelectorAll('[data-action]').forEach(btn => {
+            const newBtn = btn.cloneNode(true);
+            btn.parentNode.replaceChild(newBtn, btn);
+        });
+        content.querySelectorAll('[data-action]').forEach(btn => {
+            btn.addEventListener('click', (e) => { e.stopPropagation(); handleAction(btn.dataset.action, btn); });
+        });
+        if(module === 'inout-record' || module === 'pallet-doc' || module === 'move-record'){
+            const table = content.querySelector('table.clickable-table');
+            if(table){
+                table.addEventListener('click', function(e){
+                    const tr = e.target.closest('tr');
+                    if(!tr) return;
+                    const id = tr.dataset.id;
+                    if(!id) return;
+                    if(e.target.closest('button')) return;
+                    if(module === 'inout-record') handleAction('viewInoutDetail', { dataset: { id } });
+                    else if(module === 'pallet-doc') handleAction('viewPalletDetail', { dataset: { id } });
+                    else if(module === 'move-record') handleAction('viewMoveDetail', { dataset: { id } });
+                });
+            }
+        }
+        const searchResetMap = {
+            'production-order': { search:'searchPoBtn', reset:'resetPoBtn', renderFn:()=>{ filters.poNo=document.getElementById('poNoFilter')?.value||''; filters.soNo=document.getElementById('soNoFilter')?.value||''; filters.poCategory=document.getElementById('poCategoryFilter')?.value||''; filters.poStartDate=document.getElementById('poStart')?.value||''; filters.poEndDate=document.getElementById('poEnd')?.value||''; renderPage('production-order'); }, resetFn:()=>{ filters={}; renderPage('production-order'); } },
+            'material-requisition': { search:'searchMrBtn', reset:'resetMrBtn', renderFn:()=>{ filters.mrNo=document.getElementById('mrNoFilter')?.value||''; filters.mrProduct=document.getElementById('mrProductFilter')?.value||''; filters.mrSpec=document.getElementById('mrSpecFilter')?.value||''; filters.mrCategory=document.getElementById('mrCategoryFilter')?.value||''; filters.mrStart=document.getElementById('mrStart')?.value||''; filters.mrEnd=document.getElementById('mrEnd')?.value||''; renderPage('material-requisition'); }, resetFn:()=>{ filters={}; renderPage('material-requisition'); } },
+            'shipment-order': { search:'searchShipBtn', reset:'resetShipBtn', renderFn:()=>{ filters.shipOrderNo=document.getElementById('shipOrderNoFilter')?.value||''; filters.shipInvCode=document.getElementById('shipInvCodeFilter')?.value||''; filters.shipCustCode=document.getElementById('shipCustCodeFilter')?.value||''; filters.shipStart=document.getElementById('shipStart')?.value||''; filters.shipEnd=document.getElementById('shipEnd')?.value||''; renderPage('shipment-order'); }, resetFn:()=>{ filters={}; renderPage('shipment-order'); } },
+            'transfer-order': { search:'searchTransferBtn', reset:'resetTransferBtn', renderFn:()=>{ filters.transferNo=document.getElementById('transferNoFilter')?.value||''; filters.transferProduct=document.getElementById('transferProductFilter')?.value||''; filters.transferSpec=document.getElementById('transferSpecFilter')?.value||''; filters.transferStart=document.getElementById('transferStart')?.value||''; filters.transferEnd=document.getElementById('transferEnd')?.value||''; renderPage('transfer-order'); }, resetFn:()=>{ filters={}; renderPage('transfer-order'); } },
+            'location-archive': { search:'searchLocBtn', reset:'resetLocBtn', renderFn:()=>{ filters.locCode=document.getElementById('locCodeFilter')?.value||''; filters.locType=document.getElementById('locTypeFilter')?.value||''; renderPage('location-archive'); }, resetFn:()=>{ filters={}; renderPage('location-archive'); } },
+            'label-template': { search:'searchTempBtn', reset:'resetTempBtn', renderFn:()=>{ filters.tempName=document.getElementById('tempNameFilter')?.value||''; renderPage('label-template'); }, resetFn:()=>{ filters={}; renderPage('label-template'); } },
+            'label-record': { search:'searchLabelBtn', reset:'resetLabelBtn', renderFn:()=>{ filters.labelSpec=document.getElementById('labelSpecFilter')?.value||''; filters.labelStart=document.getElementById('labelStart')?.value||''; filters.labelEnd=document.getElementById('labelEnd')?.value||''; renderPage('label-record'); }, resetFn:()=>{ filters={}; renderPage('label-record'); } },
+            'pallet-doc': { search:'searchPalletBtn', reset:'resetPalletBtn', renderFn:()=>{ filters.palletNo=document.getElementById('palletNoFilter')?.value||''; filters.palletStart=document.getElementById('palletStart')?.value||''; filters.palletEnd=document.getElementById('palletEnd')?.value||''; renderPage('pallet-doc'); }, resetFn:()=>{ filters={}; renderPage('pallet-doc'); } },
+            'move-record': { search:'searchMoveBtn', reset:'resetMoveBtn', renderFn:()=>{ filters.moveNo=document.getElementById('moveNoFilter')?.value||''; filters.moveProduct=document.getElementById('moveProductFilter')?.value||''; renderPage('move-record'); }, resetFn:()=>{ filters={}; renderPage('move-record'); } },
+            'pick-record': { search:'searchPickBtn', reset:'resetPickBtn', renderFn:()=>{ filters.pickNo=document.getElementById('pickNoFilter')?.value||''; filters.pickProduct=document.getElementById('pickProductFilter')?.value||''; filters.pickSpec=document.getElementById('pickSpecFilter')?.value||''; filters.pickStart=document.getElementById('pickStart')?.value||''; filters.pickEnd=document.getElementById('pickEnd')?.value||''; renderPage('pick-record'); }, resetFn:()=>{ filters={}; renderPage('pick-record'); } },
+            'user-mgmt': { search:'searchUserBtn', reset:'resetUserBtn', renderFn:()=>{ filters.userLogin=document.getElementById('userLoginFilter')?.value||''; filters.userName=document.getElementById('userNameFilter')?.value||''; renderPage('user-mgmt'); }, resetFn:()=>{ filters={}; renderPage('user-mgmt'); } },
+        };
+        const config = searchResetMap[module];
+        if(config){
+            const searchBtn = document.getElementById(config.search);
+            const resetBtn = document.getElementById(config.reset);
+            if(searchBtn) searchBtn.addEventListener('click', config.renderFn);
+            if(resetBtn) resetBtn.addEventListener('click', config.resetFn);
+        }
+    }
+
+    function handleAction(action, btn){
+        const id = btn.dataset.id;
+        const loc = btn.dataset.loc;
+        const po = btn.dataset.po;
+        switch(action){
+            case 'previewQRCode':
+                if(po){
+                    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(po)}`;
+                    showModal('📱 生产单号二维码', `<div class="qr-container"><img src="${qrUrl}" alt="二维码" style="width:200px;height:200px;"><div class="qr-code-text">生产单号：${po}</div></div>`);
+                }
+                break;
+            case 'viewLocationDetail':{
+                const items = store.inventoryList.filter(i => i.库位编码 === loc);
+                let html = `<table><thead><tr><th>生产单号</th><th>存货编码</th><th>产品名称</th><th>规格型号</th><th>数量</th></tr></thead><tbody>`;
+                html += items.map(i => `<tr><td>${i.生产单号}</td><td>${i.存货编码}</td><td>${i.产品名称}</td><td>${i.规格}</td><td><strong>${i.数量}</strong></td></tr>`).join('');
+                html += `</tbody></table>`;
+                if(items.length===0) html = '<div style="text-align:center;color:#94a3b8;padding:30px;">该库位暂无库存明细</div>';
+                showModal(`📍 ${loc} 库存明细`, html);
+                break;
+            }
+            case 'viewInoutDetail':{
+                const record = store.inoutRecords.find(r => r.id === id);
+                if(record && record.明细 && record.明细.length > 0){
+                    let html = `<table><thead><tr><th>生产单号</th><th>存货编码</th><th>产品名称</th><th>规格型号</th><th>数量</th></tr></thead><tbody>`;
+                    html += record.明细.map(d => `<tr><td>${d.生产单号}</td><td>${d.存货编码}</td><td>${d.产品名称}</td><td>${d.规格型号}</td><td><strong>${d.数量}</strong></td></tr>`).join('');
+                    html += `</tbody></table>`;
+                    showModal('📋 出入库明细', html);
+                } else showModal('提示', '<div style="text-align:center;padding:30px;color:#94a3b8;">无明细数据</div>');
+                break;
+            }
+            case 'viewPalletDetail':{
+                const pallet = store.palletDocs.find(p => p.id === id);
+                if(pallet && pallet.明细 && pallet.明细.length > 0){
+                    let html = `<table><thead><tr><th>生产单号</th><th>产品名称</th><th>存货编码</th><th>数量</th></tr></thead><tbody>`;
+                    html += pallet.明细.map(d => `<tr><td>${d.生产单号}</td><td>${d.产品名称}</td><td>${d.存货编码}</td><td><strong>${d.数量}</strong></td></tr>`).join('');
+                    html += `</tbody></table>`;
+                    showModal('📦 打托明细 - ' + pallet.托盘号, html);
+                } else showModal('提示', '<div style="text-align:center;padding:30px;color:#94a3b8;">无明细数据</div>');
+                break;
+            }
+            case 'viewMoveDetail':{
+                const record = store.moveRecords.find(m => m.id === id);
+                if(record && record.明细 && record.明细.length > 0){
+                    let html = `<table><thead><tr><th>生产单号</th><th>产品名称</th><th>规格型号</th><th>产品类别</th><th>存货编码</th><th>数量</th></tr></thead><tbody>`;
+                    html += record.明细.map(d => `<tr><td>${d.生产单号}</td><td>${d.产品名称}</td><td>${d.规格型号}</td><td>${d.产品类别}</td><td>${d.存货编码}</td><td><strong>${d.数量}</strong></td></tr>`).join('');
+                    html += `</tbody></table>`;
+                    showModal('🔄 移库明细 - ' + record.移库单号, html);
+                } else showModal('提示', '<div style="text-align:center;padding:30px;color:#94a3b8;">无明细数据</div>');
+                break;
+            }
+            case 'voidInout': if(confirm('确认作废该出入库记录？')) alert('✅ 已作废（演示模式）'); break;
+            case 'voidLabel': if(confirm('确认作废该标签记录？')) alert('✅ 已作废（演示模式）'); break;
+            case 'reprintLabel': alert('🖨️ 正在补打标签...（演示模式）'); break;
+            default: alert(`🔔 操作: ${action}\nID: ${id || '无'}\n（演示模式 - 功能已触发）`);
+        }
+    }
+
+    function showModal(title, content){
+        document.getElementById('modalTitle').innerText = title;
+        document.getElementById('modalBody').innerHTML = content;
+        document.getElementById('modalOverlay').classList.remove('hidden');
+    }
+    function closeModal(){ document.getElementById('modalOverlay').classList.add('hidden'); }
+    document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+    document.getElementById('modalOverlay').addEventListener('click', (e) => { if(e.target === document.getElementById('modalOverlay')) closeModal(); });
+    document.addEventListener('keydown', (e) => { if(e.key==='Escape' && !document.getElementById('modalOverlay').classList.contains('hidden')) closeModal(); });
+
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const module = item.dataset.module;
+            if(module){ filters={}; renderPage(module); document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active')); item.classList.add('active'); }
+        });
+    });
+
+    renderPage('production-order');
+</script>
+
+</body></html>
