@@ -22,6 +22,14 @@ const routes = [
           title: '库位档案',
         },
       },
+      {
+        path: 'inbound-record',
+        name: 'inbound-record',
+        component: () => import('@/views/inbound-record/index.vue'),
+        meta: {
+          title: '入库记录',
+        },
+      },
     ],
   },
 ]

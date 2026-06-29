@@ -56,10 +56,9 @@ const DateUtil = {
      */
     monthRange(date = new Date(), format = 'YYYY-MM-DD') {
         const d = dayjs(date);
-
         return {
-            st: d.startOf(TimeUnit.MONTH),
-            ed: d.endOf(TimeUnit.MONTH),
+            st: d.startOf(TimeUnit.MONTH).format(format),
+            ed: d.endOf(TimeUnit.MONTH).format(format),
         };
     },
 

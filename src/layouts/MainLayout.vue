@@ -27,6 +27,17 @@ const menuGroups = [
       },
     ],
   },
+  {
+    title: '仓库管理',
+    menus: [
+      {
+        key: 'inbound-record',
+        label: '入库记录',
+        to: '/inbound-record',
+        icon: '📥',
+      },
+    ],
+  },
 ]
 
 const pageTitle = computed(() => route.meta?.title || '生产订单')

@@ -86,12 +86,15 @@ const gridOptions = reactive({
           v-model:value="searchForm.startDate"
           placeholder="开始日期"
           style="width: 140px"
+          format="YYYY-MM-DD"
+          value-format="YYYY-MM-DD"
         />
         <span class="text-[#94a3b8] text-sm">至</span>
         <a-date-picker
           v-model:value="searchForm.endDate"
           placeholder="结束日期"
           style="width: 140px"
+          value-format="YYYY-MM-DD"
         />
         <a-select
           v-model:value="searchForm.category"

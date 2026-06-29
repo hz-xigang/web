@@ -10,7 +10,11 @@ export function useProductionOrder() {
 
     const tableData = shallowRef([]);
     const handleSearch = async () => {
-        let {data} = await ProdOrderApi.page({...searchForm}, 1, 15);
+        let req = {...searchForm};
+
+        console.log(req.startDate.toLocaleString())
+        console.log(req.endDate.toLocaleString());
+        let {data} = await ProdOrderApi.page(req, 1, 15);
         let {total,records} = data;
         tableData.value = records;
         pageObj.total = total;
