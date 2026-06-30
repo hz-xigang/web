@@ -30,6 +30,22 @@ const routes = [
           title: '入库记录',
         },
       },
+      {
+        path: 'shipment-order',
+        name: 'shipment-order',
+        component: () => import('@/views/shipment-order/index.vue'),
+        meta: {
+          title: '发货指令单',
+        },
+      },
+      {
+        path: 'transfer-order',
+        name: 'transfer-order',
+        component: () => import('@/views/transfer-order/index.vue'),
+        meta: {
+          title: '调拨指令单',
+        },
+      },
     ],
   },
 ]

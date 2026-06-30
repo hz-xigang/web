@@ -14,6 +14,18 @@ const menuGroups = [
         to: '/production-orders',
         icon: '📋',
       },
+      {
+        key: 'shipment-order',
+        label: '发货指令单',
+        to: '/shipment-order',
+        icon: '🚚',
+      },
+      {
+        key: 'transfer-order',
+        label: '调拨指令单',
+        to: '/transfer-order',
+        icon: '🔄',
+      },
     ],
   },
   {
