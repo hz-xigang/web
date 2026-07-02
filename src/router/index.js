@@ -46,6 +46,14 @@ const routes = [
           title: '调拨指令单',
         },
       },
+      {
+        path: 'prep-order',
+        name: 'prep-order',
+        component: () => import('@/views/prep-order/index.vue'),
+        meta: {
+          title: '备料指令单',
+        },
+      },
     ],
   },
 ]

@@ -26,6 +26,12 @@ const menuGroups = [
         to: '/transfer-order',
         icon: '🔄',
       },
+      {
+        key: 'prep-order',
+        label: '备料指令单',
+        to: '/prep-order',
+        icon: '📦',
+      },
     ],
   },
   {

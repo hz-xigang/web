@@ -14,17 +14,18 @@ let {
 const searchForm = reactive({
   shipNo: '',
   custCode: '',
+  isTax: undefined,
   startDate: '',
   endDate: '',
 })
 
 
 const handleSearch = () => {
-  pageObj.current = 1
+  pageObj.current = 1;
 }
 
 const handleReset = () => {
-  Object.assign(searchForm, {shipNo: '', custCode: '', startDate: '', endDate: ''})
+  Object.assign(searchForm, {shipNo: '', custCode: '', isTax: undefined, startDate: '', endDate: ''})
   pageObj.current = 1
 }
 
@@ -41,11 +42,11 @@ const gridOptions = reactive({
   rowClassName: ({rowIndex}) => (rowIndex % 2 === 0 ? 'location-row-odd' : 'location-row-even'),
   columns: [
     {type: 'seq', width: 60, title: '序号'},
-    {field: 'no', title: '发货单号', minWidth: 160, slots: {default: 'shipNo_default'}},
+    {field: 'shipNo', title: '发货单号', minWidth: 160, slots: {default: 'shipNo_default'}},
     {field: 'type', title: '发货类型', minWidth: 120},
     {field: 'salesType', title: '销售类型', minWidth: 120},
     {field: 'erpOrderNo', title: '用友订单号', minWidth: 140},
-    {field: 'isTax', title: '含税/不含税', minWidth: 120, slots: {default: 'isTax_default'}},
+    {field: 'isTax', title: '是否含税', minWidth: 120, slots: {default: 'isTax_default'}},
     {field: 'salesDept', title: '销售部门', minWidth: 140},
     {field: 'dispatchMode', title: '发运方式', minWidth: 110},
     {field: 'customerCode', title: '客户编码', minWidth: 120},
@@ -80,6 +81,13 @@ const handleViewDetail = (row) => {
             style="width: 180px"
             allow-clear
             @pressEnter="handleSearch"
+        />
+        <a-select
+            v-model:value="searchForm.isTax"
+            placeholder="是否含税"
+            style="width: 140px"
+            allow-clear
+            :options="[{value: true, label: '含税'}, {value: false, label: '不含税'}]"
         />
         <a-date-picker
             v-model:value="searchForm.startDate"
@@ -120,7 +128,7 @@ const handleViewDetail = (row) => {
             }"
           >
             <template #shipNo_default="{ row }">
-              <span class="font-bold text-[#0f172a]">{{ row.no }}</span>
+              <span class="font-bold text-[#0f172a]">{{ row.shipNo }}</span>
             </template>
 
             <template #isTax_default="{ row }">
